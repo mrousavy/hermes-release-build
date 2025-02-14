@@ -28,11 +28,16 @@ jobs:
         with:
           key: ${{ runner.os }}-ios-cache-${{ steps.hermes-commit-id.HERMES_COMMIT }}
           path: |
-            build_iphoneos
-            build_catalyst
-            build_iphonesimulator
-            build_macosx
-            destroot
+            ./build
+            hermes/build_appletvos
+            hermes/build_appletvsimulator
+            hermes/build_catalyst
+            hermes/build_host_hermesc
+            hermes/build_iphoneos
+            hermes/build_iphonesimulator
+            hermes/build_xros
+            hermes/build_xrsimulator
+            hermes/destroot
           restore-keys: |
             ${{ runner.os }}-ios-cache
 
@@ -99,7 +104,8 @@ jobs:
         with:
           path: |
             ./build
-            android/build_android
+            hermes/android/build_android
+            hermes/build_host_hermesc
           key: ${{ runner.os }}-android-cache-${{ steps.hermes-commit-id.HERMES_COMMIT }}
           restore-keys: |
             ${{ runner.os }}-android-cache
