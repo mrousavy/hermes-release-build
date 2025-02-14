@@ -26,10 +26,15 @@ jobs:
       - name: Restore Hermes build cache
         uses: actions/cache@v4
         with:
-          path: ./build
-          key: ${{ runner.os }}-${{ steps.hermes-commit-id.HERMES_COMMIT }}
+          key: ${{ runner.os }}-ios-cache-${{ steps.hermes-commit-id.HERMES_COMMIT }}
+          path: |
+            build_iphoneos
+            build_catalyst
+            build_iphonesimulator
+            build_macosx
+            destroot
           restore-keys: |
-            ${{ runner.os }}-
+            ${{ runner.os }}-ios-cache
 
       # Build
       - name: Build Hermes (+compiler) for host
@@ -78,7 +83,7 @@ jobs:
         run: git submodule update --init --recursive
 
       - name: Set up CMake
-        run: |-
+        run: |
           yes | sdkmanager "cmake;3.22.1" &
           sudo apt update && sudo apt install -y libicu-dev
 
@@ -91,10 +96,12 @@ jobs:
       - name: Restore Hermes build cache
         uses: actions/cache@v4
         with:
-          path: ./build
-          key: ${{ runner.os }}-${{ steps.hermes-commit-id.HERMES_COMMIT }}
+          path: |
+            ./build
+            android/build_android
+          key: ${{ runner.os }}-android-cache-${{ steps.hermes-commit-id.HERMES_COMMIT }}
           restore-keys: |
-            ${{ runner.os }}-
+            ${{ runner.os }}-android-cache
 
       # Build
       - name: Build Hermes (+compiler) for host
