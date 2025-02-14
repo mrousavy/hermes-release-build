@@ -12,6 +12,7 @@ jobs:
     steps:
       # Setup
       - uses: actions/checkout@v4
+      - uses: seanmiddleditch/gha-setup-ninja@master
       - name: Pull Hermes submodule
         run: git submodule update --init --recursive
 
@@ -63,6 +64,7 @@ jobs:
     steps:
       # Setup
       - uses: actions/checkout@v4
+      - uses: seanmiddleditch/gha-setup-ninja@master
       - name: Pull Hermes submodule
         run: git submodule update --init --recursive
 
