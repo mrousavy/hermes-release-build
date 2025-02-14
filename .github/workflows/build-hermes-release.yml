@@ -28,7 +28,7 @@ jobs:
         with:
           key: ${{ runner.os }}-buildcache
           restore-keys: |
-            ${{ runner.os }}
+            ${{ runner.os }}-ios-cache
           path: |
             build
             hermes/build_appletvos
@@ -100,7 +100,7 @@ jobs:
         with:
           key: ${{ runner.os }}-buildcache
           restore-keys: |
-            ${{ runner.os }}
+            ${{ runner.os }}-android-cache
           path: |
             build
             build_android
