@@ -27,6 +27,8 @@ jobs:
         uses: actions/cache@v4
         with:
           key: ${{ runner.os }}-buildcache
+          restore-keys: |
+            ${{ runner.os }}
           path: |
             build
             hermes/build_appletvos
@@ -97,6 +99,8 @@ jobs:
         uses: actions/cache@v4
         with:
           key: ${{ runner.os }}-buildcache
+          restore-keys: |
+            ${{ runner.os }}
           path: |
             build
             build_android
