@@ -52,14 +52,14 @@ jobs:
           ./utils/build-ios-framework.sh
 
       - name: Log outputs
-        run: ls -la hermes/destroot
+        run: ls -laR hermes/destroot
 
       # Upload
       - name: Prepare folders for zip
         run: |
           mkdir tmp_zip_workspace
           cp -r hermes/destroot/include tmp_zip_workspace/include
-          cp -r hermes/destroot/Library/Frameworks/universal/hermes.xcframework tmp_zip_workspace/hermes.xcframework
+          cp -r hermes/destroot/Library/Frameworks/* tmp_zip_workspace
       - name: Zip the .xcframework + include Headers
         run: |
           cd tmp_zip_workspace
@@ -121,7 +121,7 @@ jobs:
           ./gradlew githubRelease --build-cache
 
       - name: Log outputs
-        run: ls -la hermes/android/build_android/outputs
+        run: ls -laR hermes/android/build_android
 
       - name: Zip the .aar and .so files
         run: zip -r hermes.zip hermes/android/build_android/outputs
