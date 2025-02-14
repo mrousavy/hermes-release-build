@@ -1,0 +1,113 @@
+name: Build Hermes on GitHub releases
+
+on:
+  release:
+    types: [published]
+
+jobs:
+  # Build Hermes for iOS
+  build_hermes_ios:
+    name: Build Hermes for iOS (release)
+    runs-on: macos-latest
+    steps:
+      # Setup
+      - uses: actions/checkout@v4
+      - name: Pull Hermes submodule
+        run: git submodule update --init --recursive
+
+      # Prepare cache
+      - name: Get Hermes commit ID
+        id: hermes-commit-id
+        run: |
+          cd hermes
+          echo "HERMES_COMMIT=$(git rev-parse HEAD)" >> $GITHUB_OUTPUT
+      - name: Restore Hermes build cache
+        uses: actions/cache@v4
+        with:
+          path: ./build
+          key: ${{ runner.os }}-${{ steps.hermes-commit-id.HERMES_COMMIT }}
+          restore-keys: |
+            ${{ runner.os }}-
+
+      # Build
+      - name: Build Hermes (+compiler) for host
+        run: |
+          cmake -S hermes -B build -G Ninja
+          cmake --build ./build
+      - name: Build Hermes iOS Framework
+        run: |
+          cd hermes
+          ./utils/build-ios-framework.sh
+
+      - name: Log outputs
+        run: ls -la hermes/destroot
+
+      # Upload
+      - name: Zip the .xcframework + include Headers
+        run: zip -r Hermes-Apple.zip hermes/destroot
+
+      - name: Upload Hermes to Release
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ github.event.release.upload_url }}
+          asset_path: Hermes-Apple.zip
+          asset_name: "Hermes-Apple.zip"
+          asset_content_type: application/zip
+
+  # Build Hermes for Android
+  build_hermes_android:
+    name: Build Hermes for Android (release)
+    runs-on: ubuntu-latest
+    steps:
+      # Setup
+      - uses: actions/checkout@v4
+      - name: Pull Hermes submodule
+        run: git submodule update --init --recursive
+
+      # Prepare cache
+      - name: Get Hermes commit ID
+        id: hermes-commit-id
+        run: |
+          cd hermes
+          echo "HERMES_COMMIT=$(git rev-parse HEAD)" >> $GITHUB_OUTPUT
+      - name: Restore Hermes build cache
+        uses: actions/cache@v4
+        with:
+          path: ./build
+          key: ${{ runner.os }}-${{ steps.hermes-commit-id.HERMES_COMMIT }}
+          restore-keys: |
+            ${{ runner.os }}-
+
+      # Build
+      - name: Build Hermes (+compiler) for host
+        run: |
+          cmake -S hermes -B build -G Ninja
+          cmake --build ./build
+      - name: Build Hermes Android framewor
+        env:
+          HERMES_WS_DIR: ${{ github.workspace }}
+        run: |
+          cd hermes/android
+          ./gradlew githubRelease
+
+      - name: Log outputs
+        run: ls -la hermes/android/build_android/outputs
+
+      - name: Zip the .aar and .so files
+        run: zip -r hermes.zip hermes/android/build_android/outputs
+
+      - name: Upload Hermes aar to Release
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ github.event.release.upload_url }}
+          asset_path: hermes.zip
+          asset_name: "Hermes-Android.aar"
+          asset_content_type: application/zip
+
+      # Gradle cache doesn't like daemons
+      - name: Stop Gradle Daemon
+        run: cd ./hermes/android && ./gradlew --stop
