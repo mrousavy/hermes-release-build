@@ -27,13 +27,12 @@ jobs:
         id: hermes-commit-id
         run: |
           echo "HERMES_COMMIT_ID=$(git rev-parse HEAD:hermes)" >> $GITHUB_OUTPUT
-      - name: Restore Hermes build cache
+      - name: Restore CMake build cache
         uses: actions/cache@v4
-        if: always()
         with:
-          key: ${{ runner.os }}-ios-cache-${{ env.HERMES_COMMIT_ID }}
+          key: ${{ runner.os }}-buildcache
           path: |
-            ./build
+            build
             hermes/build_appletvos
             hermes/build_appletvsimulator
             hermes/build_catalyst
@@ -43,8 +42,6 @@ jobs:
             hermes/build_xros
             hermes/build_xrsimulator
             hermes/destroot
-          restore-keys: |
-            ${{ runner.os }}-ios-cache
 
       # Build
       - name: Build Hermes (+compiler) for host
@@ -103,17 +100,14 @@ jobs:
       - name: Get Hermes commit ID
         run: |
           echo "HERMES_COMMIT_ID=$(git rev-parse HEAD:hermes)" >> $GITHUB_OUTPUT
-      - name: Restore Hermes build cache
+      - name: Restore CMake build cache
         uses: actions/cache@v4
-        if: always()
         with:
+          key: ${{ runner.os }}-buildcache
           path: |
             build
             build_android
             hermes/build_host_hermesc
-          key: ${{ runner.os }}-android-cache-${{ env.HERMES_COMMIT_ID }}
-          restore-keys: |
-            ${{ runner.os }}-android-cache
 
       # Build
       - name: Build Hermes (+compiler) for host
