@@ -9,6 +9,8 @@ jobs:
   build_hermes_ios:
     name: Build Hermes for iOS (release)
     runs-on: macos-latest
+    env:
+      HERMES_WS_DIR: ${{ github.workspace }}
     steps:
       # Setup
       - uses: actions/checkout@v4
