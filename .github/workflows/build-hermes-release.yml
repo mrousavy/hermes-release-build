@@ -25,6 +25,7 @@ jobs:
           echo "HERMES_COMMIT=$(git rev-parse HEAD)" >> $GITHUB_OUTPUT
       - name: Restore Hermes build cache
         uses: actions/cache@v4
+        if: always()
         with:
           key: ${{ runner.os }}-ios-cache-${{ steps.hermes-commit-id.HERMES_COMMIT }}
           path: |
@@ -101,6 +102,7 @@ jobs:
           echo "HERMES_COMMIT=$(git rev-parse HEAD)" >> $GITHUB_OUTPUT
       - name: Restore Hermes build cache
         uses: actions/cache@v4
+        if: always()
         with:
           path: |
             ./build
