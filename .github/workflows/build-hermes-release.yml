@@ -128,7 +128,9 @@ jobs:
         run: ls -laR build_android
 
       - name: Zip the .aar and .so files
-        run: zip -r hermes.zip build_android/outputs
+        run: |
+          cd build_android/outputs
+          zip -r ../../Hermes-Android.zip *
 
       - name: Upload Hermes aar to Release
         uses: actions/upload-release-asset@v1
@@ -136,8 +138,8 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ github.event.release.upload_url }}
-          asset_path: hermes.zip
-          asset_name: "Hermes-Android.aar"
+          asset_path: Hermes-Android.zip
+          asset_name: "Hermes-Android.zip"
           asset_content_type: application/zip
 
       # Gradle cache doesn't like daemons
