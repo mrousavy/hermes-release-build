@@ -82,10 +82,11 @@ jobs:
       - name: Pull Hermes submodule
         run: git submodule update --init --recursive
 
-      - name: Set up CMake
-        run: |
-          yes | sdkmanager "cmake;3.22.1" &
-          sudo apt update && sudo apt install -y libicu-dev
+      - name: Install dependencies
+        run: |-
+          sudo apt update
+          sudo apt install -y git openssh-client cmake build-essential \
+              libreadline-dev libicu-dev zip python3
 
       # Prepare cache
       - name: Get Hermes commit ID
