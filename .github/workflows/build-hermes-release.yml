@@ -97,7 +97,7 @@ jobs:
         run: |
           cmake -S hermes -B build -G Ninja
           cmake --build ./build
-      - name: Build Hermes Android framewor
+      - name: Build Hermes Android framework
         env:
           HERMES_WS_DIR: ${{ github.workspace }}
         run: |
