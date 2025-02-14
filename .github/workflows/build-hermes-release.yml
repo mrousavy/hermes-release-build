@@ -108,7 +108,7 @@ jobs:
         with:
           path: |
             ./build
-            hermes/android/build_android
+            build_android
             hermes/build_host_hermesc
           key: ${{ runner.os }}-android-cache-${{ steps.hermes-commit-id.HERMES_COMMIT }}
           restore-keys: |
@@ -125,10 +125,10 @@ jobs:
           ./gradlew githubRelease --build-cache
 
       - name: Log outputs
-        run: ls -laR hermes/android/build_android
+        run: ls -laR build_android
 
       - name: Zip the .aar and .so files
-        run: zip -r hermes.zip hermes/android/build_android/outputs
+        run: zip -r hermes.zip build_android/outputs
 
       - name: Upload Hermes aar to Release
         uses: actions/upload-release-asset@v1
