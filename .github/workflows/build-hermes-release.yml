@@ -14,22 +14,21 @@ jobs:
     steps:
       # Setup
       - uses: actions/checkout@v4
+        with:
+          submodules: true
       - uses: jwlawson/actions-setup-cmake@v2
       - uses: seanmiddleditch/gha-setup-ninja@master
-      - name: Pull Hermes submodule
-        run: git submodule update --init --recursive
 
       # Prepare cache
       - name: Get Hermes commit ID
         id: hermes-commit-id
         run: |
-          cd hermes
-          echo "HERMES_COMMIT=$(git rev-parse HEAD)" >> $GITHUB_OUTPUT
+          echo "HERMES_COMMIT_ID=$(git rev-parse HEAD:hermes)" >> $GITHUB_OUTPUT
       - name: Restore Hermes build cache
         uses: actions/cache@v4
         if: always()
         with:
-          key: ${{ runner.os }}-ios-cache-${{ steps.hermes-commit-id.HERMES_COMMIT }}
+          key: ${{ runner.os }}-ios-cache-${{ env.HERMES_COMMIT_ID }}
           path: |
             ./build
             hermes/build_appletvos
@@ -87,8 +86,8 @@ jobs:
     steps:
       # Setup
       - uses: actions/checkout@v4
-      - name: Pull Hermes submodule
-        run: git submodule update --init --recursive
+        with:
+          submodules: true
 
       - name: Install dependencies
         run: |-
@@ -98,19 +97,17 @@ jobs:
 
       # Prepare cache
       - name: Get Hermes commit ID
-        id: hermes-commit-id
         run: |
-          cd hermes
-          echo "HERMES_COMMIT=$(git rev-parse HEAD)" >> $GITHUB_OUTPUT
+          echo "HERMES_COMMIT_ID=$(git rev-parse HEAD:hermes)" >> $GITHUB_OUTPUT
       - name: Restore Hermes build cache
         uses: actions/cache@v4
         if: always()
         with:
           path: |
-            ./build
+            build
             build_android
             hermes/build_host_hermesc
-          key: ${{ runner.os }}-android-cache-${{ steps.hermes-commit-id.HERMES_COMMIT }}
+          key: ${{ runner.os }}-android-cache-${{ env.HERMES_COMMIT_ID }}
           restore-keys: |
             ${{ runner.os }}-android-cache
 
