@@ -102,7 +102,7 @@ jobs:
           HERMES_WS_DIR: ${{ github.workspace }}
         run: |
           cd hermes/android
-          ./gradlew githubRelease
+          ./gradlew githubRelease --build-cache
 
       - name: Log outputs
         run: ls -la hermes/android/build_android/outputs
