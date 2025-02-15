@@ -69,6 +69,16 @@ jobs:
           name: Hermes-Apple.zip
           path: Hermes-Apple.zip
 
+      - name: Zip Hermes itself
+        run: |
+          cd build/bin
+          zip ../hermes-debug.zip hermes
+      - name: Upload Hermes Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: hermes-debug-macos.zip
+          path: hermes-debug.zip
+
   # Build Hermes for Android
   build_hermes_android:
     name: Build Hermes for Android (release)
@@ -122,6 +132,16 @@ jobs:
           name: Hermes-Android.zip
           path: Hermes-Android.zip
 
+      - name: Zip Hermes itself
+        run: |
+          cd build/bin
+          zip ../hermes-debug.zip hermes
+      - name: Upload Hermes Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: hermes-debug-linux.zip
+          path: hermes-debug.zip
+
       # Gradle cache doesn't like daemons
       - name: Stop Gradle Daemon
         run: cd ./hermes/android && ./gradlew --stop
@@ -141,9 +161,21 @@ jobs:
         with:
           name: Hermes-Android.zip
 
+      - name: Download hermes-debug-macos.zip
+        uses: actions/download-artifact@v4
+        with:
+          name: hermes-debug-macos.zip
+
+      - name: Download hermes-debug-linux.zip
+        uses: actions/download-artifact@v4
+        with:
+          name: hermes-debug-linux.zip
+
       - name: Release
         uses: softprops/action-gh-release@v2
         with:
           files: |
             Hermes-Apple.zip
             Hermes-Android.zip
+            hermes-debug-macos.zip
+            hermes-debug-linux.zip
