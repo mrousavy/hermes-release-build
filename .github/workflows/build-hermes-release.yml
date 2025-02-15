@@ -211,7 +211,7 @@ jobs:
           # Set Description to Hermes version
           HERMES_COMMIT="$(git rev-parse HEAD:hermes)"
           HERMES_COMMIT_SHORT="$(git rev-parse --short HEAD:hermes)"
-          TAG_DESCRIPTION="Release build of [Hermes $(HERMES_COMMIT_SHORT)](https://github.com/facebook/hermes/commit/$HERMES_COMMIT)."
+          TAG_DESCRIPTION="Release build of [Hermes ${HERMES_COMMIT_SHORT}](https://github.com/facebook/hermes/commit/$HERMES_COMMIT)."
 
           # Use the new GitHub Actions recommended way to set output
           echo "tag_name=$NEW_TAG" >> $GITHUB_OUTPUT
