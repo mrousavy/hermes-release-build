@@ -38,6 +38,7 @@ jobs:
             hermes/build_xros
             hermes/build_xrsimulator
             hermes/destroot
+            staging
 
       # Build
       - name: Build Hermes (+compiler) for host
@@ -90,8 +91,6 @@ jobs:
       - uses: actions/checkout@v4
         with:
           submodules: true
-      - name: Setup Gradle
-        uses: gradle/actions/setup-gradle@v4
       - name: Install dependencies
         run: |-
           sudo apt update
@@ -107,6 +106,8 @@ jobs:
             build
             build_android
             hermes/build_host_hermesc
+            hermes/android/.gradle/
+            staging
 
       # Build
       - name: Build Hermes (+compiler) for host
@@ -211,7 +212,7 @@ jobs:
           # Set Description to Hermes version
           HERMES_COMMIT="$(git rev-parse HEAD:hermes)"
           HERMES_COMMIT_SHORT="$(git rev-parse --short HEAD:hermes)"
-          TAG_DESCRIPTION="Release build of [Hermes ${HERMES_COMMIT_SHORT}](https://github.com/facebook/hermes/commit/$HERMES_COMMIT)."
+          TAG_DESCRIPTION="Release build of [Hermes \`${HERMES_COMMIT_SHORT}\`](https://github.com/facebook/hermes/tree/$HERMES_COMMIT)."
 
           # Use the new GitHub Actions recommended way to set output
           echo "tag_name=$NEW_TAG" >> $GITHUB_OUTPUT
