@@ -3,6 +3,9 @@ name: Build Hermes and upload to GitHub releases
 on:
   push:
     branches: [main]
+    paths:
+      - '.github/workflows/build-hermes-release.yml'
+      - 'hermes/**'
 
 jobs:
   # Build Hermes for iOS
@@ -69,7 +72,7 @@ jobs:
       - name: Zip Hermes itself
         run: |
           cd build/bin
-          zip ../hermes-debug.zip hermes
+          zip ../../hermes-debug.zip hermes
       - name: Upload Hermes Artifact
         uses: actions/upload-artifact@v4
         with:
@@ -132,7 +135,7 @@ jobs:
       - name: Zip Hermes itself
         run: |
           cd build/bin
-          zip ../hermes-debug.zip hermes
+          zip ../../hermes-debug.zip hermes
       - name: Upload Hermes Artifact
         uses: actions/upload-artifact@v4
         with:
