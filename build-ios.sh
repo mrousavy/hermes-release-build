@@ -3,6 +3,9 @@
 set -e
 
 export HERMES_WS_DIR="$(pwd)"
+export IMPORT_HOST_COMPILERS="$(HERMES_WS_DIR)/build/ImportHostCompilers.cmake"
+export CMAKE_CXX_FLAGS_RELEASE="-O3 -DNDEBUG"
+
 if [ ! -d ./hermes ]; then
   echo "hermes/ does not exist in this directory."
   exit 1
