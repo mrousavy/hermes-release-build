@@ -151,6 +151,10 @@ jobs:
     needs: [build_hermes_ios, build_hermes_android]
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: true
+
       - name: Download Hermes-Apple.zip
         uses: actions/download-artifact@v4
         with:
@@ -204,13 +208,21 @@ jobs:
           NEW_TAG="v${MAJOR}.${MINOR}.${NEW_PATCH}"
           echo "New tag: $NEW_TAG"
 
+          # Set Description to Hermes version
+          HERMES_COMMIT="$(git rev-parse HEAD:hermes)"
+          HERMES_COMMIT_SHORT="$(git rev-parse --short HEAD:hermes)"
+          TAG_DESCRIPTION="Release build of [Hermes $(HERMES_COMMIT_SHORT)](https://github.com/facebook/hermes/commit/$HERMES_COMMIT)."
+
           # Use the new GitHub Actions recommended way to set output
-          echo "new_tag=$NEW_TAG" >> $GITHUB_OUTPUT
+          echo "tag_name=$NEW_TAG" >> $GITHUB_OUTPUT
+          echo "tag_description=$TAG_DESCRIPTION" >> $GITHUB_OUTPUT
 
       - name: Release
         uses: softprops/action-gh-release@v2
         with:
-          tag_name: ${{ steps.bump_version.outputs.new_tag }}
+          tag_name: ${{ steps.bump_version.outputs.tag_name }}
+          body: ${{ steps.bump_version.outputs.tag_description }}
+          make_latest: true
           files: |
             Hermes-Apple.zip
             Hermes-Android.zip
