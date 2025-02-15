@@ -1,2 +1,9 @@
 # Hermes Build outputs
 /build
+/build_android
+/tmp_zip_workspace
+/staging
+Hermes-Apple.zip
+Hermes-Android.zip
+
+.DS_Store
