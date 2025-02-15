@@ -73,12 +73,12 @@ jobs:
       - name: Zip Hermes itself
         run: |
           cd build/bin
-          zip ../../hermes-debug.zip hermes
+          zip ../../hermes-debug-macos.zip hermes
       - name: Upload Hermes Artifact
         uses: actions/upload-artifact@v4
         with:
           name: hermes-debug-macos.zip
-          path: hermes-debug.zip
+          path: hermes-debug-macos.zip
 
   # Build Hermes for Android
   build_hermes_android:
@@ -136,12 +136,12 @@ jobs:
       - name: Zip Hermes itself
         run: |
           cd build/bin
-          zip ../../hermes-debug.zip hermes
+          zip ../../hermes-debug-linux.zip hermes
       - name: Upload Hermes Artifact
         uses: actions/upload-artifact@v4
         with:
           name: hermes-debug-linux.zip
-          path: hermes-debug.zip
+          path: hermes-debug-linux.zip
 
       # Gradle cache doesn't like daemons
       - name: Stop Gradle Daemon
