@@ -8,7 +8,7 @@ jobs:
   # Build Hermes for iOS
   build_hermes_ios:
     name: Build Hermes for iOS (release)
-    runs-on: macos-15-arm64
+    runs-on: macos-15
     env:
       HERMES_WS_DIR: ${{ github.workspace }}
     steps:
