@@ -93,8 +93,6 @@ jobs:
         uses: actions/cache@v4
         with:
           key: ${{ runner.os }}-buildcache
-          restore-keys: |
-            ${{ runner.os }}-android-cache-
           path: |
             build
             build_android
