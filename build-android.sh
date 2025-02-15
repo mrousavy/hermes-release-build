@@ -9,7 +9,7 @@ if [ ! -d ./hermes ]; then
 fi
 
 echo "Building Hermes core..."
-cmake -S hermes -B build -G Ninja
+cmake -S hermes -B build -G Ninja -DCMAKE_BUILD_TYPE=Release
 cmake --build ./build
 
 echo "Building Android..."
